@@ -9,6 +9,14 @@ const (
 	RmapType    RobjType = 3
 )
 
+func (robjType RobjType) IsInt() bool {
+	return robjType == RintType
+}
+
+func (robjType RobjType) IsString() bool {
+	return robjType == RstringType
+}
+
 type Robj struct {
 	Type RobjType
 	Obj  interface{}
