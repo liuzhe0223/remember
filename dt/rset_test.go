@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-func TestNewRset(t *testing.T)  {
+func TestNewRset(t *testing.T) {
 	rset := NewRset()
 	newRset := new(Rset)
 	newRset.Value = map[Robj]string{}
 	assert.Equal(t, rset, newRset)
 }
 
-func TestRsetOp(t *testing.T)  {
+func TestRsetOp(t *testing.T) {
 	rset := NewRset()
 
 	robj1 := Robj{RintType, 1}
@@ -23,6 +23,7 @@ func TestRsetOp(t *testing.T)  {
 	rset.Sadd(robj2)
 	rset.Sadd(robj3)
 
-	rset.Spop(robj2)
-	assert.Equal(t, rset.All(), []Robj{robj1, robj3})
+	rset.Spop(robj1)
+	rset.Spop(robj3)
+	assert.Equal(t, rset.All(), []Robj{robj2})
 }
