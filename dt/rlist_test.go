@@ -11,6 +11,18 @@ func TestNewRlist(t *testing.T) {
 	assert.NotNil(t, rlist)
 }
 
+func TestGetAlL(t *testing.T) {
+	rlist := NewRlist()
+
+	robj1 := Robj{RintType, 1}
+	robj2 := Robj{RintType, 2}
+
+	rlist.Rpush(robj1)
+	rlist.Rpush(robj2)
+
+	assert.Equal(t, rlist.GetALL(), []Robj{robj1, robj2})
+}
+
 func TestRpush(t *testing.T) {
 	rlist := NewRlist()
 	robj := Robj{RintType, 1}

@@ -17,7 +17,29 @@ func (robjType RobjType) IsString() bool {
 	return robjType == RstringType
 }
 
+//robj
 type Robj struct {
 	Type RobjType
 	Obj  interface{}
+}
+
+func NewRintObj(value int) *Robj {
+	return &Robj{
+		Type: RintType,
+		Obj:  value,
+	}
+}
+
+func NewRstringObj(value string) *Robj {
+	return &Robj{
+		Type: RstringType,
+		Obj:  value,
+	}
+}
+
+func NewRlistObj(value *Rlist) *Robj {
+	return &Robj{
+		Type: RlistType,
+		Obj:  value,
+	}
 }
