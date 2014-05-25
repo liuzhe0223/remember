@@ -18,10 +18,6 @@ type RequestData struct {
 func ParseRequest(r *http.Request) (method, key, op string, params map[string]interface{}, err error) {
 	//for the root path (or index)
 	method = r.Method
-	if r.URL.Path == "/" {
-		op = "default"
-		return
-	}
 
 	//op and key
 	path := strings.Trim(r.URL.Path, "/")
@@ -38,14 +34,6 @@ func ParseRequest(r *http.Request) (method, key, op string, params map[string]in
 		return
 	}
 
-	//data
-	requestData := new(RequestData)
-	body, _ := ioutil.ReadAll(r.Body)
-	err = json.Unmarshal(body, requestData)
-	if err != nil {
-		return
-	}
-
 	//parameters
 	params = map[string]interface{}{}
 	r.ParseForm()
@@ -53,7 +41,16 @@ func ParseRequest(r *http.Request) (method, key, op string, params map[string]in
 		params[k] = v[0]
 	}
 
-	params["data"] = requestData.Data
+	//data
+	requestData := new(RequestData)
+	body, _ := ioutil.ReadAll(r.Body)
+	if method != "GET" {
+		err = json.Unmarshal(body, &requestData)
+		if err != nil {
+			return
+		}
+		params["data"] = requestData.Data
+	}
 
 	return
 }

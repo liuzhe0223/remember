@@ -28,10 +28,10 @@ func TestGetRealOPAndParams(t *testing.T) {
 }
 
 func TestParseRequest(t *testing.T) {
-	r, _ := http.NewRequest("GET", "http://test.com/key/lrange?start=1&end=2", strings.NewReader("{\"data\":\"hello\"}"))
+	r, _ := http.NewRequest("POST", "http://test.com/key/lrange?start=1&end=2", strings.NewReader("{\"data\":\"hello\"}"))
 	method, key, op, params, _ := ParseRequest(r)
 
-	assert.Equal(t, "GET", method)
+	assert.Equal(t, "POST", method)
 	assert.Equal(t, "key", key)
 	assert.Equal(t, "lrange", op)
 	expectParams := map[string]interface{}{

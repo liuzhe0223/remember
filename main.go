@@ -19,28 +19,34 @@ func main() {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-
+	if r.URL.Path == "/" {
+		io.WriteString(w, "Hello, this is a remember server !")
+		return
+	}
 	method, key, op, params, err := utils.ParseRequest(r)
 	if err != nil {
+		fmt.Println(err)
 		io.WriteString(w, "bad request")
-	}
-
-	value, ok := Db[key]
-
-	//this key is not in the db
-	if !ok && method == "Get" {
-		io.WriteString(w, "")
 		return
 	}
 
+	//this key is not in the db
+	if _, ok := Db[key]; !ok && method == "GET" {
+		io.WriteString(w, "not found")
+		return
+	}
+	value := Db[key]
 	resValues := utils.DoOp(&value, method, op, params)
 
-	if res, ok := resValues[0].Interface().([]dt.Robj); !ok {
-		if res, ok = resValues[0].Interface().(dt.Robj); !ok {
-			io.WriteString(w, "server err!")
-		}
+	var jsonStr string
+	if objRes, ok := resValues[0].Interface().([]dt.Robj); ok {
+		jsonStr = utils.ParseRes(objRes)
+	} else if objListRes, ok := resValues[0].Interface().(dt.Robj); ok {
+		jsonStr = utils.ParseRes(objListRes)
+	} else {
+		io.WriteString(w, "server err!")
 	}
 
-	jsonStr := utils.ParseRes(res)
 	io.WriteString(w, jsonStr)
+	return
 }
