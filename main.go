@@ -31,9 +31,13 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//this key is not in the db
-	if _, ok := Db[key]; !ok && method == "GET" {
-		io.WriteString(w, "not found")
-		return
+	if _, ok := Db[key]; !ok {
+		if method == "GET" {
+			io.WriteString(w, "not found")
+			return
+		} else {
+			Db[key] = utils.createObjAccordingOp(op)
+		}
 	}
 	value := Db[key]
 	resValues := utils.DoOp(&value, method, op, params)

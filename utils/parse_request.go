@@ -55,17 +55,6 @@ func ParseRequest(r *http.Request) (method, key, op string, params map[string]in
 	return
 }
 
-//method op map for do op
-var methodMap = map[string]map[string]string{
-	"GET": map[string]string{
-		"default": "Get",
-		"lrange":  "Lrange:start:int:end:int",
-	},
-	"POST": map[string]string{
-		"rpush": "Rpush:data:Robj",
-	},
-}
-
 func getRealOpAndParams(opAndParamsStr string, inParams map[string]interface{}) (realOp string, outParams []reflect.Value, err error) {
 	splitList := strings.Split(opAndParamsStr, ":")
 	outParams = make([]reflect.Value, 0, 2)

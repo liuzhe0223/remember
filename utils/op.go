@@ -5,6 +5,17 @@ import (
 	"reflect"
 )
 
+//method op map for do op
+var methodMap = map[string]map[string]string{
+	"GET": map[string]string{
+		"default": "Get",
+		"lrange":  "Lrange:start:int:end:int",
+	},
+	"POST": map[string]string{
+		"rpush": "Rpush:data:Robj",
+	},
+}
+
 func DoOp(robj *dt.Robj, method, op string, params map[string]interface{}) (resReflectValues []reflect.Value) {
 
 	realOp, in, _ := getRealOpAndParams(methodMap[method][op], params)
