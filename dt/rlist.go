@@ -13,7 +13,7 @@ func NewRlist() *Rlist {
 }
 
 //waiting for test
-func (rl *Rlist) GetALL() (resList []Robj) {
+func (rl *Rlist) Get() (resList []Robj) {
 	resList = make([]Robj, 0, rl.Len())
 	for el := rl.Front(); el != nil; el = el.Next() {
 		resList = append(resList, el.Value.(Robj))

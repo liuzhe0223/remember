@@ -75,8 +75,8 @@ func getRealOpAndParams(opAndParamsStr string, inParams map[string]interface{}) 
 			} else {
 				value = reflect.ValueOf(strValue)
 			}
-			outParams = append(outParams, value)
 		}
+		outParams = append(outParams, value)
 	}
 
 	return

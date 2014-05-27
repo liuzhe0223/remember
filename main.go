@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/liuzhe0223/remember/dt"
 	"github.com/liuzhe0223/remember/utils"
 	"io"
@@ -24,6 +25,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	method, key, op, params, err := utils.ParseRequest(r)
+	fmt.Println("r parsed______", r)
 	if err != nil {
 		fmt.Println(err)
 		io.WriteString(w, "bad request")
@@ -36,10 +38,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			io.WriteString(w, "not found")
 			return
 		} else {
-			Db[key] = utils.createObjAccordingOp(op)
+			Db[key] = utils.CreateObjAccordingOp(op)
 		}
 	}
 	value := Db[key]
+	fmt.Println("found or create key___", value)
+
 	resValues := utils.DoOp(&value, method, op, params)
 
 	var jsonStr string

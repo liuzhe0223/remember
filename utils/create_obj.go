@@ -1,14 +1,16 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/liuzhe0223/remember/dt"
 )
 
 var op2ObjType = map[string]dt.RobjType{
-	"Rpush": dt.RlistType,
+	"rpush": dt.RlistType,
 }
 
-func createObjAccordingOp(op string) (robj dt.Robj) {
+func CreateObjAccordingOp(op string) (robj dt.Robj) {
+	fmt.Println("creating obj, op= ", op)
 	switch op2ObjType[op] {
 	case dt.RlistType:
 		robj = dt.Robj{
@@ -16,4 +18,5 @@ func createObjAccordingOp(op string) (robj dt.Robj) {
 			Obj:  dt.NewRlist(),
 		}
 	}
+	return
 }
