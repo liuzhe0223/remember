@@ -12,6 +12,15 @@ func NewRlist() *Rlist {
 	return &Rlist{list.New()}
 }
 
+//waiting for test
+func (rl *Rlist) Get() (resList []Robj) {
+	resList = make([]Robj, 0, rl.Len())
+	for el := rl.Front(); el != nil; el = el.Next() {
+		resList = append(resList, el.Value.(Robj))
+	}
+	return
+}
+
 //return ok
 func (rl *Rlist) Rpush(robj Robj) bool {
 	rl.PushBack(robj)
