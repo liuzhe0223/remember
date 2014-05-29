@@ -46,6 +46,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	resValues := utils.DoOp(&value, method, op, params)
 
+  fmt.Println("final value =   ", value)
+
 	var jsonStr string
 	if objRes, ok := resValues[0].Interface().([]dt.Robj); ok {
 		jsonStr = utils.ParseRes(objRes)
@@ -54,7 +56,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		io.WriteString(w, "server err!")
 	}
-
+  
 	io.WriteString(w, jsonStr)
 	return
 }

@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+  "fmt"
 )
 
 type RequestData struct {
@@ -44,9 +45,10 @@ func ParseRequest(r *http.Request) (method, key, op string, params map[string]in
 	//data
 	requestData := new(RequestData)
 	body, _ := ioutil.ReadAll(r.Body)
-	if method != "GET" {
+	if method != "GET" && len(body) != 0 {
 		err = json.Unmarshal(body, &requestData)
 		if err != nil {
+      fmt.Println("json unmarshal__ err", err)
 			return
 		}
 		params["data"] = requestData.Data
@@ -64,7 +66,10 @@ func getRealOpAndParams(opAndParamsStr string, inParams map[string]interface{}) 
 		var value reflect.Value
 		if splitList[i] == "data" {
 			data := inParams["data"]
-			robj, _ := parseData(data)
+			robj, err := parseData(data)
+      if err != nil {
+        fmt.Println(err)
+      }
 			value = reflect.ValueOf(robj)
 		} else {
 			strValue := inParams[splitList[i]].(string)
@@ -83,12 +88,16 @@ func getRealOpAndParams(opAndParamsStr string, inParams map[string]interface{}) 
 }
 
 func parseData(data interface{}) (robj dt.Robj, err error) {
-	if intData, ok := data.(int); ok {
+  fmt.Println("parseData________-data= ", data)
+  fmt.Println("parseData________-data type= ", reflect.TypeOf(data))
+	if intData, ok := data.(float64); ok {
+    fmt.Println("parseData________- intData = ", intData)
 		robj = dt.Robj{
 			Type: dt.RintType,
-			Obj:  intData,
+			Obj:  dt.Rint(intData),
 		}
 	} else if strData, ok := data.(string); ok {
+    fmt.Println("parseData________- strData = ", strData)
 		robj = dt.Robj{
 			Type: dt.RstringType,
 			Obj:  strData,

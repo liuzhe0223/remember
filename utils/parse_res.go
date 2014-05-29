@@ -4,13 +4,17 @@ import (
 	"github.com/liuzhe0223/remember/dt"
 	"strconv"
 	"strings"
+  "fmt"
+  "reflect"
 )
 
 //parse base robj, int and string
 func parseBaseRobj(robj *dt.Robj) (stringValue string) {
 	switch robj.Type {
 	case dt.RintType:
-		intValue, _ := robj.Obj.(int)
+    fmt.Println("res obj type ==", reflect.TypeOf(robj.Obj))
+		intValue, ok := robj.Obj.(dt.Rint)
+    fmt.Println("parse data ...ok= ", ok)
 		stringValue = strconv.FormatInt(int64(intValue), 10)
 	case dt.RstringType:
 		stringValue, _ = robj.Obj.(string)

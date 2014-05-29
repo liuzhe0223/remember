@@ -34,12 +34,14 @@ func (rl *Rlist) Lpush(robj Robj) bool {
 func (rl *Rlist) Rpop() (value Robj) {
 	el := rl.Back()
 	value, _ = el.Value.(Robj)
+  rl.Remove(el)
 	return
 }
 
 func (rl *Rlist) Lpop() (value Robj) {
 	el := rl.Front()
 	value, _ = el.Value.(Robj)
+  rl.Remove(el)
 	return
 }
 

@@ -6,7 +6,9 @@ import (
 )
 
 var op2ObjType = map[string]dt.RobjType{
+	"iset": dt.RintType,
 	"rpush": dt.RlistType,
+	"lpush": dt.RlistType,
 }
 
 func CreateObjAccordingOp(op string) (robj dt.Robj) {
@@ -16,6 +18,11 @@ func CreateObjAccordingOp(op string) (robj dt.Robj) {
 		robj = dt.Robj{
 			Type: dt.RlistType,
 			Obj:  dt.NewRlist(),
+		}
+	case dt.RintType:
+		robj = dt.Robj{
+			Type: dt.RintType,
+			Obj:  dt.NewRint(),
 		}
 	}
 	return
