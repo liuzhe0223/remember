@@ -13,14 +13,14 @@ var methodMap = map[string]map[string]string{
 		"lrange":  "Lrange:start:int:end:int",
 	},
 	"POST": map[string]string{
-    "iset": "Iset:data:Robj",
+		"iset":  "Iset:data:Robj",
 		"rpush": "Rpush:data:Robj",
-    "lpush": "Lpush:data:Robj",
+		"lpush": "Lpush:data:Robj",
 	},
-  "PUT": map[string]string{
+	"PUT": map[string]string{
 		"rpop": "Rpop",
 		"lpop": "Lpop",
-  },
+	},
 }
 
 func DoOp(robj *dt.Robj, method, op string, params map[string]interface{}) (resReflectValues []reflect.Value) {
@@ -40,8 +40,6 @@ func DoOp(robj *dt.Robj, method, op string, params map[string]interface{}) (resR
 	}
 
 	fmt.Println("done op, ___value =", resReflectValues)
-  p := robj.Obj.(*dt.Rint)
-	fmt.Println("done op, ___robj.Obj = ", *p)
 	//convent the res to []dt.Robj form []relect.Value
 	// resValue = make([]dt.Robj, 0, len(resReflectValues))
 	// for _, value := range resReflectValues {

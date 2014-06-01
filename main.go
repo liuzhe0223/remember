@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/liuzhe0223/remember/dt"
+	"github.com/liuzhe0223/remember/pst"
 	"github.com/liuzhe0223/remember/utils"
 	"io"
 	"log"
@@ -13,7 +14,8 @@ var Db dt.Rmap
 
 func main() {
 	//init db
-	Db = dt.Rmap{}
+	pster := pst.Pster{Db: &Db}
+	go pster.Go()
 
 	http.HandleFunc("/", Handler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -46,7 +48,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	resValues := utils.DoOp(&value, method, op, params)
 
-  fmt.Println("final value =   ", value)
+	fmt.Println("final value =   ", value)
 
 	var jsonStr string
 	if objRes, ok := resValues[0].Interface().([]dt.Robj); ok {
@@ -56,7 +58,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		io.WriteString(w, "server err!")
 	}
-  
+
 	io.WriteString(w, jsonStr)
 	return
 }

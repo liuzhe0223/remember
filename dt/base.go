@@ -26,14 +26,14 @@ type Robj struct {
 func NewRintObj(value int) *Robj {
 	return &Robj{
 		Type: RintType,
-		Obj:  value,
+		Obj:  Rint(value),
 	}
 }
 
 func NewRstringObj(value string) *Robj {
 	return &Robj{
 		Type: RstringType,
-		Obj:  value,
+		Obj:  Rstring(value),
 	}
 }
 
