@@ -1,16 +1,14 @@
 package pst
 
-import (
-	"encoding/json"
-	"github.com/liuzhe0223/remember/dt"
-	"io"
-)
+// import (
+// 	"encoding/json"
+// )
 
-func (p *Pster) Loads() {
+// func (p *Pster) Loads() {
 
-	var jsonStr string
-	r.Read(&jsonStr)
-	json.Unmarshal(jsonStr, p.Db)
+// 	var jsonStr string
+// 	r.Read(&jsonStr)
+// 	json.Unmarshal(jsonStr, p.Db)
 
-	return
-}
+// 	return
+// }

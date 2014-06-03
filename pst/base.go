@@ -2,7 +2,6 @@ package pst
 
 import (
 	"github.com/liuzhe0223/remember/dt"
-	"io"
 	"time"
 )
 
@@ -18,11 +17,11 @@ func timer(c chan int) {
 }
 
 func (p *Pster) Go() {
-	c = make(chan int)
+	c := make(chan int)
 	timer(c)
 
 	for {
 		<-c
-		p.Dumps(p.Db)
+		p.Dumps()
 	}
 }
