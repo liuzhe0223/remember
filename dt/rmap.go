@@ -1,41 +1,29 @@
 package dt
 
-type Rmap map[string]Robj
+type Rmap map[string]string
 
-func (m *Rmap) Get() (robj Robj) {
-  return Robj{
-    Type: RmapType,
-    Obj: m,
-  }
+func (m *Rmap) Get() Rmap {
+  return *m
 }
 
-func (m *Rmap) Mset(robj Robj) bool{
-  mValue := robj.Obj.(Rmap)
-  var k string
-  var v Robj
-  for k, v = range mValue {
-  }
+func (m *Rmap) Mset(k, v string) bool{
   (*m)[k] = v
   return true
 }
 
-func (m *Rmap) Mget(robj Robj) Robj {
-  return (*m)[robj.Obj.(string)]
+func (m *Rmap) Mget(k string) string {
+  return (*m)[k]
 }
 
-func (m *Rmap) Mdelete(robj Robj) bool {
-  delete(*m, robj.Obj.(string))
+func (m *Rmap) Mdelete(k string) bool {
+  delete(*m, k)
   return true
 }
 
-func (m *Rmap) Mkeys() []Robj{
-  resList := []Robj{}
+func (m *Rmap) Mkeys() []string{
+  resList := make([]string, 0, len(*m))
   for k, _ := range *m {
-    kObj := Robj {
-      Type: RstringType,
-      Obj: k,
-    }
-    resList = append(resList, kObj)
+    resList = append(resList, k)
   }
   return resList
 }
