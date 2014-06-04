@@ -18,6 +18,7 @@ func main() {
 	go pster.Go()
 
 	http.HandleFunc("/", Handler)
+  fmt.Println("This is a remember server, listening on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -50,11 +51,14 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("final value =   ", value)
 
+  w.Header().Set("Content-Type", "application/json")
 	var jsonStr string
 	if objRes, ok := resValues[0].Interface().([]dt.Robj); ok {
 		jsonStr = utils.ParseRes(objRes)
 	} else if objListRes, ok := resValues[0].Interface().(dt.Robj); ok {
 		jsonStr = utils.ParseRes(objListRes)
+  } else if boolVlaue, ok := resValues[0].Interface().(bool); ok{
+    jsonStr = utils.ParseRes(boolVlaue)
 	} else {
 		io.WriteString(w, "server err!")
 	}

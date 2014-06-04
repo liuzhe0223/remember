@@ -103,9 +103,16 @@ func parseData(data interface{}) (robj dt.Robj, err error) {
 			Obj:  strData,
 		}
 	} else if mapData, ok := data.(map[string]interface{}); ok {
+    var k string
+    var v dt.Robj
+    for k, _ = range mapData {
+      v, _ = parseData(mapData[k])
+    }
 		robj = dt.Robj{
 			Type: dt.RmapType,
-			Obj:  mapData,
+      Obj:  dt.Rmap{
+        k: v,
+      },
 		}
 	} else {
 		err = errors.New("wrong data type")

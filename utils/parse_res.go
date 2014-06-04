@@ -44,6 +44,8 @@ func ParseRes(res interface{}) string {
 		resStr = parseBaseRobj(&robj)
 	} else if robjList, ok := res.([]dt.Robj); ok {
 		resStr = parseRobjList(robjList)
-	}
+  } else if boolVlaue, ok := res.(bool); ok {
+    resStr = strconv.FormatBool(boolVlaue)
+  }
 	return `{"data":` + resStr + "}"
 }
