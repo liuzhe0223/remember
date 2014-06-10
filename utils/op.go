@@ -13,9 +13,8 @@ var methodMap = map[string]map[string]string{
 		"lrange":  "Lrange:start:int:end:int",
 	},
 	"POST": map[string]string{
-		"iset":  "Iset:data:Robj",
-		"rpush": "Rpush:data:Robj",
-		"lpush": "Lpush:data:Robj",
+		"rpush": "Rpush:data:string",
+		"lpush": "Lpush:data:string",
 	},
 	"PUT": map[string]string{
 		"rpop": "Rpop",
@@ -30,10 +29,13 @@ func DoOp(robj interface{}, method, op string, params map[string]interface{}) (r
 
 	fmt.Println("do oping, ___in =", in)
 	//todo: ad more op
-	switch robj.Type {
-	case dt.RlistType:
-		resReflectValues = reflect.ValueOf(robj.Obj.(*dt.Rlist)).MethodByName(realOp).Call(in)
-	default:
+	fmt.Println("robj type: ", reflect.TypeOf(robj).String())
+
+	if pRlist, ok := robj.(*dt.Rlist); ok {
+		fmt.Println("do op rlist ing _______")
+		resReflectValues = reflect.ValueOf(pRlist).MethodByName(realOp).Call(in)
+	} else {
+		fmt.Println("do op default _______")
 		resReflectValues = make([]reflect.Value, 0, 0)
 	}
 

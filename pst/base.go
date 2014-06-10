@@ -1,12 +1,11 @@
 package pst
 
 import (
-	"github.com/liuzhe0223/remember/dt"
 	"time"
 )
 
 type Pster struct {
-	Db *dt.Rmap
+	Db *map[string]interface{}
 }
 
 func timer(c chan int) {

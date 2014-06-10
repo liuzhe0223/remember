@@ -34,14 +34,14 @@ func (rl *Rlist) Lpush(v string) bool {
 func (rl *Rlist) Rpop() (v string) {
 	el := rl.Back()
 	v, _ = el.Value.(string)
-  rl.Remove(el)
+	rl.Remove(el)
 	return
 }
 
 func (rl *Rlist) Lpop() (v string) {
 	el := rl.Front()
 	v, _ = el.Value.(string)
-  rl.Remove(el)
+	rl.Remove(el)
 	return
 }
 

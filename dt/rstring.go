@@ -3,15 +3,15 @@ package dt
 type Rstring string
 
 func NewString() *Rstring {
-  var value Rstring
-  return &value
+	var value Rstring
+	return &value
 }
 
 func (s *Rstring) Get() string {
-  return string(*s)
+	return string(*s)
 }
 
 func (s *Rstring) Sset(v string) bool {
-  *s = Rstring(v)
-  return true
+	*s = Rstring(v)
+	return true
 }

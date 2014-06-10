@@ -15,6 +15,7 @@ func CreateObjAccordingOp(op string) (robj interface{}) {
 	switch op2ObjType[op] {
 	case dt.RlistType:
 		robj = dt.NewRlist()
+		fmt.Println("created a new list")
 	}
 	return
 }
