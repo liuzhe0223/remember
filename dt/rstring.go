@@ -11,7 +11,7 @@ func (s *Rstring) Get() string {
 	return string(*s)
 }
 
-func (s *Rstring) Sset(v string) bool {
+func (s *Rstring) Set(v string) bool {
 	*s = Rstring(v)
 	return true
 }

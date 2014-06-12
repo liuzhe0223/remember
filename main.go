@@ -66,7 +66,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	} else if boolVlaue, ok := resValues[0].Interface().(bool); ok {
 		jsonStr = utils.ParseRes(boolVlaue)
-
+	} else if mapValue, ok := resValues[0].Interface().(map[string]string); ok {
+		jsonStr = utils.ParseRes(mapValue)
 	} else {
 		io.WriteString(w, "server err!")
 	}

@@ -51,6 +51,7 @@ func ParseRequest(r *http.Request) (method, key, op string, params map[string]in
 			return
 		}
 		params["data"] = requestData.Data
+		fmt.Println("origin data ____--:", params["data"])
 	}
 
 	return
@@ -68,6 +69,9 @@ func getRealOpAndParams(opAndParamsStr string, inParams map[string]interface{}) 
 			outParams = append(outParams, reflect.ValueOf(int(inValue)))
 		case "string":
 			outParams = append(outParams, reflect.ValueOf(inParams[splitList[i]]))
+		case "map":
+			m := formatMapData(inParams[splitList[i]].(map[string]interface{}))
+			outParams = append(outParams, reflect.ValueOf(m))
 		}
 	}
 
@@ -86,5 +90,13 @@ func isValidData(data interface{}) (res bool) {
 		return
 	}
 	res = false
+	return
+}
+
+func formatMapData(data map[string]interface{}) (resMap map[string]string) {
+	resMap = map[string]string{}
+	for k, v := range data {
+		resMap[k] = v.(string)
+	}
 	return
 }

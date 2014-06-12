@@ -1,17 +1,17 @@
 package dt
 
 type Rset struct {
-	Len    uint
-	Value  map[string]string
+	Len   int
+	Value map[string]string
 }
 
-func NewRset() (rset *Rset) {
-	rset = new(Rset)
+func NewRset() *Rset {
+	rset := new(Rset)
 	rset.Value = map[string]string{}
-	return
+	return rset
 }
 
-func (rset *Rset) All() []string{
+func (rset *Rset) Get() []string {
 	res := make([]string, 0, rset.Len)
 	for k, _ := range rset.Value {
 		res = append(res, k)
@@ -30,7 +30,7 @@ func (rset *Rset) Sadd(v string) bool {
 	return true
 }
 
-func (rset *Rset) Spop(v string) string{
+func (rset *Rset) Spop(v string) string {
 	if _, ok := rset.Value[v]; ok {
 		delete(rset.Value, v)
 		rset.Len -= 1
@@ -38,4 +38,8 @@ func (rset *Rset) Spop(v string) string{
 	} else {
 		return ""
 	}
+}
+
+func (rset *Rset) Slength() int {
+	return rset.Len
 }

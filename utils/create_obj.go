@@ -6,8 +6,11 @@ import (
 )
 
 var op2ObjType = map[string]dt.Rtype{
+	"set":   dt.RstringType,
 	"rpush": dt.RlistType,
 	"lpush": dt.RlistType,
+	"sadd":  dt.RsetType,
+	"mset":  dt.RmapType,
 }
 
 func CreateObjAccordingOp(op string) (robj interface{}) {
@@ -16,6 +19,12 @@ func CreateObjAccordingOp(op string) (robj interface{}) {
 	case dt.RlistType:
 		robj = dt.NewRlist()
 		fmt.Println("created a new list")
+	case dt.RsetType:
+		robj = dt.NewRset()
+	case dt.RstringType:
+		robj = dt.NewString()
+	case dt.RmapType:
+		robj = dt.NewRmap()
 	}
 	return
 }

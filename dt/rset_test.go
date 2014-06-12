@@ -25,5 +25,5 @@ func TestRsetOp(t *testing.T) {
 
 	rset.Spop(v1)
 	rset.Spop(v3)
-	assert.Equal(t, rset.All(), []string{v2})
+	assert.Equal(t, rset.Get(), []string{v2})
 }
