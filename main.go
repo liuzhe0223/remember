@@ -12,9 +12,10 @@ import (
 var Db map[string]interface{}
 
 func main() {
-	Db = map[string]interface{}{}
+	pster := pst.Pster{}
+
+	Db, _ = pster.Loads()
 	//init db
-	pster := pst.Pster{Db: &Db}
 	go pster.Go()
 
 	http.HandleFunc("/", Handler)

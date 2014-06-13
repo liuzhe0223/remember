@@ -1,27 +1,35 @@
 package pst
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/liuzhe0223/remember/dt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestDumps(t *testing.T) {
-	rlistObj := dt.NewRlistObj(dt.NewRlist())
-	robj := dt.Robj{
-		Type: dt.RlistType,
-		Obj:  rlistObj,
+	pRstring := dt.NewString()
+	pRstring.Set("test_string")
+
+	pRset := dt.NewRset()
+	pRset.Sadd("test_set_string")
+	pRset.Sadd("test_set_string2")
+
+	pRlist := dt.NewRlist()
+	pRlist.Rpush("hello_list")
+	pRlist.Rpush("hello2_list")
+
+	pRmap := dt.NewRmap()
+	(*pRmap)["test_k"] = "test_key"
+	(*pRmap)["test_k1"] = "test_key1"
+
+	Db := map[string]interface{}{
+		"stringV": pRstring,
+		"setV":    pRset,
+		"listV":   pRlist,
+		"mapV":    pRmap,
 	}
-	m := dt.Rmap{"test": robj}
 
-	jsonByte, _ := json.Marshal(m)
-	fmt.Println(string(jsonByte))
+	p := Pster{Db: &Db}
 
-	var m2 dt.Rmap
-	json.Unmarshal(jsonByte, &m2)
-
-	fmt.Println(m2)
-	assert.Equal(t, m, m2)
+	assert.Nil(t, p.Dumps())
 }
