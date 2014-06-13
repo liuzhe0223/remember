@@ -22,8 +22,6 @@ func (p *Pster) Loads() (rdb map[string]interface{}, err error) {
 		k := string(iter.Key())
 		v := string(iter.Value())
 
-		fmt.Println(k)
-
 		dT := valType(k, v)
 
 		splitK := strings.Split(k, "~")
@@ -31,18 +29,20 @@ func (p *Pster) Loads() (rdb map[string]interface{}, err error) {
 
 		switch dT {
 		case "rstring":
-			rdb[k] = v
+			rstring := dt.Rstring(v)
+			rdb[k] = &rstring
 		case "rset":
+			fmt.Println("in rset")
 			rdb[realK] = loadRset(k, iter)
 		case "rmap":
+			fmt.Println("in rmap")
 			rdb[realK] = loadRmap(k, iter)
 		case "rlist":
+			fmt.Println("in rlist")
 			rdb[realK] = loadRlist(k, iter)
 		default:
-			fmt.Println("in default")
 			rdb[k] = v
 		}
-		fmt.Println("one  return , rdb:", rdb)
 	}
 
 	return
@@ -64,19 +64,16 @@ func loadRset(k string, iter iterator.Iterator) (rset *dt.Rset) {
 			return
 		}
 
-		fmt.Println("in load rset, key", string(iter.Key()))
 		rset.Sadd(string(iter.Value()))
-		fmt.Println("in load rset, rdb", rset)
 	}
 
 	return
 }
 
 func loadRmap(k string, iter iterator.Iterator) (rmap *dt.Rmap) {
-	fmt.Println("in load rmap")
 	rmap = dt.NewRmap()
 	for iter.Next() {
-		if string(iter.Key()) == k+"end" {
+		if string(iter.Key()) == k+"~end" {
 			return
 		}
 
@@ -89,7 +86,6 @@ func loadRmap(k string, iter iterator.Iterator) (rmap *dt.Rmap) {
 }
 
 func loadRlist(k string, iter iterator.Iterator) (rlist *dt.Rlist) {
-	fmt.Println("in load list")
 
 	rlist = dt.NewRlist()
 	for iter.Next() {

@@ -63,6 +63,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		jsonStr = utils.ParseRes(strListRes)
 
 	} else if strRes, ok := resValues[0].Interface().(string); ok {
+		fmt.Println("before parse res string")
 		jsonStr = utils.ParseRes(strRes)
 
 	} else if boolVlaue, ok := resValues[0].Interface().(bool); ok {

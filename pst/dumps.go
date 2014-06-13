@@ -37,7 +37,7 @@ func (p *Pster) Dumps() (err error) {
 			for elK, elV := range *rmap {
 				db.Put([]byte(k+"~"+elK), []byte(elV), nil)
 			}
-			db.Put([]byte(k+"~end"), []byte(""), nil)
+			db.Put([]byte(k+"~~end"), []byte(""), nil)
 
 			//store rList  k~nu v
 		} else if rList, ok := v.(*dt.Rlist); ok {
