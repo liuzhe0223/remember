@@ -11,55 +11,55 @@ func TestNewRlist(t *testing.T) {
 	assert.NotNil(t, rlist)
 }
 
-func TestGetAlL(t *testing.T) {
+func TestGet(t *testing.T) {
 	rlist := NewRlist()
 
-	robj1 := Robj{RintType, 1}
-	robj2 := Robj{RintType, 2}
+  v1 := "test1"
+  v2 := "test2"
 
-	rlist.Rpush(robj1)
-	rlist.Rpush(robj2)
+	rlist.Rpush(v1)
+	rlist.Rpush(v2)
 
-	assert.Equal(t, rlist.GetALL(), []Robj{robj1, robj2})
+	assert.Equal(t, rlist.Get(), []string{v1, v2})
 }
 
 func TestRpush(t *testing.T) {
 	rlist := NewRlist()
-	robj := Robj{RintType, 1}
+  v1 := "test1"
 
-	assert.True(t, rlist.Rpush(robj))
+	assert.True(t, rlist.Rpush(v1))
 }
 
 func TestLpush(t *testing.T) {
 	rlist := NewRlist()
-	robj := Robj{RintType, 1}
+  v1 := "test1"
 
-	assert.True(t, rlist.Lpush(robj))
+	assert.True(t, rlist.Lpush(v1))
 }
 
 func TestPop(t *testing.T) {
 	rlist := NewRlist()
-	robj1 := Robj{RintType, 1}
-	robj2 := Robj{RintType, 2}
-	robj3 := Robj{RintType, 3}
+	v1 := "1"
+	v2 := "2"
+	v3 := "3"
 
-	rlist.Rpush(robj1)
-	rlist.Rpush(robj2)
-	rlist.Rpush(robj3)
+	rlist.Rpush(v1)
+	rlist.Rpush(v2)
+	rlist.Rpush(v3)
 
-	assert.Equal(t, rlist.Lpop(), robj1)
-	assert.Equal(t, rlist.Rpop(), robj3)
+	assert.Equal(t, rlist.Lpop(), v1)
+	assert.Equal(t, rlist.Rpop(), v3)
 }
 
 func TestLrange(t *testing.T) {
 	rlist := NewRlist()
-	robj1 := Robj{RintType, 1}
-	robj2 := Robj{RintType, 2}
-	robj3 := Robj{RintType, 3}
+	v1 := "1"
+	v2 := "2"
+	v3 := "3"
 
-	rlist.Rpush(robj1)
-	rlist.Rpush(robj2)
-	rlist.Rpush(robj3)
+	rlist.Rpush(v1)
+	rlist.Rpush(v2)
+	rlist.Rpush(v3)
 
-	assert.Equal(t, rlist.Lrange(0, 1), []Robj{robj1, robj2})
+	assert.Equal(t, rlist.Lrange(0, 1), []string{v1, v2})
 }

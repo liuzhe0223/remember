@@ -13,39 +13,41 @@ func NewRlist() *Rlist {
 }
 
 //waiting for test
-func (rl *Rlist) Get() (resList []Robj) {
-	resList = make([]Robj, 0, rl.Len())
+func (rl *Rlist) Get() (resList []string) {
+	resList = make([]string, 0, rl.Len())
 	for el := rl.Front(); el != nil; el = el.Next() {
-		resList = append(resList, el.Value.(Robj))
+		resList = append(resList, el.Value.(string))
 	}
 	return
 }
 
 //return ok
-func (rl *Rlist) Rpush(robj Robj) bool {
-	rl.PushBack(robj)
+func (rl *Rlist) Rpush(v string) bool {
+	rl.PushBack(v)
 	return true
 }
 
-func (rl *Rlist) Lpush(robj Robj) bool {
-	return rl.PushFront(robj) != nil
+func (rl *Rlist) Lpush(v string) bool {
+	return rl.PushFront(v) != nil
 }
 
-func (rl *Rlist) Rpop() (value Robj) {
+func (rl *Rlist) Rpop() (v string) {
 	el := rl.Back()
-	value, _ = el.Value.(Robj)
+	v, _ = el.Value.(string)
+	rl.Remove(el)
 	return
 }
 
-func (rl *Rlist) Lpop() (value Robj) {
+func (rl *Rlist) Lpop() (v string) {
 	el := rl.Front()
-	value, _ = el.Value.(Robj)
+	v, _ = el.Value.(string)
+	rl.Remove(el)
 	return
 }
 
-func (rl *Rlist) Lrange(start, end int) (values []Robj) {
+func (rl *Rlist) Lrange(start, end int) (values []string) {
 	if start+1 > rl.Len() || start > end {
-		values = make([]Robj, 0)
+		values = make([]string, 0)
 		return
 	}
 
@@ -56,12 +58,12 @@ func (rl *Rlist) Lrange(start, end int) (values []Robj) {
 		stop = rl.Len() - 1
 	}
 
-	values = make([]Robj, 0, stop-start+1)
+	values = make([]string, 0, stop-start+1)
 
 	el := rl.Front()
 	for i := 0; i <= stop; i++ {
 		if i >= start {
-			value := el.Value.(Robj)
+			value := el.Value.(string)
 			values = append(values, value)
 		}
 		el = el.Next()

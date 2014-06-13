@@ -1,19 +1,18 @@
 package dt
 
 type Rset struct {
-	ElType RobjType
-	Len    uint
-	Value  map[Robj]string
+	Len   int
+	Value map[string]string
 }
 
-func NewRset() (rset *Rset) {
-	rset = new(Rset)
-	rset.Value = map[Robj]string{}
-	return
+func NewRset() *Rset {
+	rset := new(Rset)
+	rset.Value = map[string]string{}
+	return rset
 }
 
-func (rset *Rset) All() []Robj {
-	res := make([]Robj, 0, rset.Len)
+func (rset *Rset) Get() []string {
+	res := make([]string, 0, rset.Len)
 	for k, _ := range rset.Value {
 		res = append(res, k)
 	}
@@ -21,22 +20,26 @@ func (rset *Rset) All() []Robj {
 }
 
 //return ok
-func (rset *Rset) Sadd(value interface{}) bool {
-	data := value.(Robj)
-	if _, ok := rset.Value[data]; ok {
+func (rset *Rset) Sadd(v string) bool {
+	if _, ok := rset.Value[v]; ok {
 		return true
 	}
-	rset.Value[data] = ""
+
+	rset.Value[v] = ""
 	rset.Len += 1
 	return true
 }
 
-func (rset *Rset) Spop(key Robj) Robj {
-	if _, ok := rset.Value[key]; ok {
-		delete(rset.Value, key)
+func (rset *Rset) Spop(v string) string {
+	if _, ok := rset.Value[v]; ok {
+		delete(rset.Value, v)
 		rset.Len -= 1
-		return key
+		return v
 	} else {
-		return Robj{}
+		return ""
 	}
+}
+
+func (rset *Rset) Slength() int {
+	return rset.Len
 }

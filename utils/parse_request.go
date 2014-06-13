@@ -3,7 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"errors"
-	"github.com/liuzhe0223/remember/dt"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -44,12 +44,14 @@ func ParseRequest(r *http.Request) (method, key, op string, params map[string]in
 	//data
 	requestData := new(RequestData)
 	body, _ := ioutil.ReadAll(r.Body)
-	if method != "GET" {
+	if method != "GET" && len(body) != 0 {
 		err = json.Unmarshal(body, &requestData)
 		if err != nil {
+			fmt.Println("json unmarshal__ err", err)
 			return
 		}
 		params["data"] = requestData.Data
+		fmt.Println("origin data ____--:", params["data"])
 	}
 
 	return
@@ -57,49 +59,44 @@ func ParseRequest(r *http.Request) (method, key, op string, params map[string]in
 
 func getRealOpAndParams(opAndParamsStr string, inParams map[string]interface{}) (realOp string, outParams []reflect.Value, err error) {
 	splitList := strings.Split(opAndParamsStr, ":")
-	outParams = make([]reflect.Value, 0, 2)
 	realOp = splitList[0]
-	length := len(splitList)
-	for i := 1; i < length; i += 2 {
-		var value reflect.Value
-		if splitList[i] == "data" {
-			data := inParams["data"]
-			robj, _ := parseData(data)
-			value = reflect.ValueOf(robj)
-		} else {
-			strValue := inParams[splitList[i]].(string)
-			if splitList[i+1] == "int" {
-				int64Value, _ := strconv.ParseInt(strValue, 10, 0)
-				intValue := int(int64Value)
-				value = reflect.ValueOf(intValue)
-			} else {
-				value = reflect.ValueOf(strValue)
-			}
+
+	outParams = make([]reflect.Value, 0, 2)
+	for i := 1; i < len(splitList); i += 2 {
+		switch splitList[i+1] {
+		case "int":
+			inValue, _ := strconv.ParseInt(inParams[splitList[i]].(string), 10, 64)
+			outParams = append(outParams, reflect.ValueOf(int(inValue)))
+		case "string":
+			outParams = append(outParams, reflect.ValueOf(inParams[splitList[i]]))
+		case "map":
+			m := formatMapData(inParams[splitList[i]].(map[string]interface{}))
+			outParams = append(outParams, reflect.ValueOf(m))
 		}
-		outParams = append(outParams, value)
 	}
 
 	return
 }
 
-func parseData(data interface{}) (robj dt.Robj, err error) {
-	if intData, ok := data.(int); ok {
-		robj = dt.Robj{
-			Type: dt.RintType,
-			Obj:  intData,
-		}
-	} else if strData, ok := data.(string); ok {
-		robj = dt.Robj{
-			Type: dt.RstringType,
-			Obj:  strData,
-		}
-	} else if mapData, ok := data.(map[string]interface{}); ok {
-		robj = dt.Robj{
-			Type: dt.RmapType,
-			Obj:  mapData,
-		}
-	} else {
-		err = errors.New("wrong data type")
+func isValidData(data interface{}) (res bool) {
+	fmt.Println("parseData________-data= ", data)
+	fmt.Println("parseData________-data type= ", reflect.TypeOf(data))
+
+	if _, ok := data.(string); ok {
+		res = true
+		return
+	} else if _, ok := data.(map[string]interface{}); ok {
+		res = true
+		return
+	}
+	res = false
+	return
+}
+
+func formatMapData(data map[string]interface{}) (resMap map[string]string) {
+	resMap = map[string]string{}
+	for k, v := range data {
+		resMap[k] = v.(string)
 	}
 	return
 }

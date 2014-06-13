@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/liuzhe0223/remember/dt"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -9,9 +10,9 @@ import (
 func TestDoOP(t *testing.T) {
 	rlist := dt.NewRlist()
 
-	robj1 := dt.Robj{dt.RintType, 1}
-	robj2 := dt.Robj{dt.RintType, 2}
-	robj3 := dt.Robj{dt.RintType, 3}
+	robj1 := "1"
+	robj2 := "2"
+	robj3 := "3"
 
 	rlist.Rpush(robj1)
 	rlist.Rpush(robj2)
@@ -21,9 +22,10 @@ func TestDoOP(t *testing.T) {
 		"start": "1",
 		"end":   "2",
 	}
+	fmt.Println("________rlist: ", rlist)
+	opRes := DoOp(rlist, "GET", "lrange", params)
+	fmt.Println(opRes)
 
-	rlistObj := dt.Robj{dt.RlistType, rlist}
-	opRes := DoOp(&rlistObj, "GET", "lrange", params)
-	res, _ := opRes[0].Interface().([]dt.Robj)
-	assert.Equal(t, []dt.Robj{robj2, robj3}, res)
+	res, _ := opRes[0].Interface().([]string)
+	assert.Equal(t, []string{"2", "3"}, res)
 }
