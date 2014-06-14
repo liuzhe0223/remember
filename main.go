@@ -13,9 +13,13 @@ var Db map[string]interface{}
 
 func main() {
 	pster := pst.Pster{}
+	pster.Init()
 
-	Db, _ = pster.Loads()
 	//init db
+	Db, _ = pster.Loads()
+	pster.Db = &Db
+
+	//start the timer sync
 	go pster.Go()
 
 	http.HandleFunc("/", Handler)

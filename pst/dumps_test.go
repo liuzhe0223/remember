@@ -30,6 +30,8 @@ func TestDumps(t *testing.T) {
 	}
 
 	p := Pster{Db: &Db}
+	p.Init()
+	defer p.Leveldb.Close()
 
 	assert.Nil(t, p.Dumps())
 }

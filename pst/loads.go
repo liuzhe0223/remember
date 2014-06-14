@@ -3,19 +3,12 @@ package pst
 import (
 	"fmt"
 	"github.com/liuzhe0223/remember/dt"
-	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/iterator"
 	"strings"
 )
 
 func (p *Pster) Loads() (rdb map[string]interface{}, err error) {
-	db, err := leveldb.OpenFile("/home/zhe/db", nil)
-	if err != nil {
-		return
-	}
-	defer db.Close()
-
-	iter := db.NewIterator(nil, nil)
+	iter := p.Leveldb.NewIterator(nil, nil)
 	rdb = map[string]interface{}{}
 
 	for iter.Next() {

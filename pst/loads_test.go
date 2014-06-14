@@ -8,6 +8,9 @@ import (
 
 func TestLoads(t *testing.T) {
 	pster := Pster{}
+	pster.Init()
+	defer pster.Leveldb.Close()
+
 	db, err := pster.Loads()
 
 	fmt.Println(db)
