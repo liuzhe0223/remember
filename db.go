@@ -1,6 +1,8 @@
 package remember
 
 import (
+	"sync"
+
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
@@ -18,12 +20,13 @@ func init() {
 	}
 
 	Db = &db{
-		leveldbP,
+		DB: leveldbP,
 	}
 }
 
 type db struct {
 	*leveldb.DB
+	sync.Mutex
 }
 
 func (d *db) Get(key []byte) (value []byte, err error) {
