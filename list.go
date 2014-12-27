@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 )
 
-func (d *db) lEncodeMetakey(key []byte) []byte {
+func (r *Remember) lEncodeMetakey(key []byte) []byte {
 	bufLength := len(key) + 1
 	buf := make([]byte, bufLength, bufLength)
 	buf[0] = byte(listType)
@@ -13,8 +13,8 @@ func (d *db) lEncodeMetakey(key []byte) []byte {
 	return buf
 }
 
-func (d *db) lEncodeKey(key []byte, seq int32) []byte {
-	metaKey := d.lEncodeMetakey(key)
+func (r *Remember) lEncodeKey(key []byte, seq int32) []byte {
+	metaKey := r.lEncodeMetakey(key)
 
 	bufLength := len(metaKey) + 4
 	buf := make([]byte, bufLength, bufLength)
