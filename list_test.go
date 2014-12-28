@@ -36,3 +36,22 @@ func TestLEncodeKey(t *testing.T) {
 
 	assert.Equal(t, expectListKey, listKey)
 }
+
+func TestLSetMetaAndLGetMeta(t *testing.T) {
+	store := NewLeveldb("testdb")
+	r := NewRemember(store)
+	defer r.Close()
+
+	lKey := []byte("testListKey")
+	metaKey := r.lEncodeMetakey(lKey)
+
+	size, err := r.lSetMeta(metaKey, 500, 600)
+	assert.Nil(t, err)
+	assert.Equal(t, 600-500+1, size)
+
+	hp, tp, size, err := r.lGetMeta(metaKey)
+	assert.Nil(t, err)
+	assert.Equal(t, 500, hp)
+	assert.Equal(t, 600, tp)
+	assert.Equal(t, 600-500+1, size)
+}
