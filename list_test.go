@@ -55,3 +55,19 @@ func TestLSetMetaAndLGetMeta(t *testing.T) {
 	assert.Equal(t, 600, tp)
 	assert.Equal(t, 600-500+1, size)
 }
+
+func TestLpushAndLPop(t *testing.T) {
+	store := NewLeveldb("testdb")
+	r := NewRemember(store)
+	defer r.Close()
+
+	key := []byte("testListLpushAndPopKey")
+	value := []byte("testListLpushAndPopValue")
+
+	err := r.Lpush(key, value)
+	assert.Nil(t, err)
+
+	testValue, err := r.Lpop(key)
+	assert.Nil(t, err)
+	assert.Equal(t, value, testValue)
+}
