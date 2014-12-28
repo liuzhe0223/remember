@@ -14,6 +14,8 @@ func NewLeveldb(DbPath string) *Leveldb {
 		panic(err)
 	}
 
+	StoreErrorNotFound = leveldb.ErrNotFound
+
 	return &Leveldb{
 		DB: db,
 	}

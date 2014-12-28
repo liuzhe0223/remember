@@ -4,6 +4,10 @@ import (
 	"sync"
 )
 
+var (
+	StoreErrorNotFound error
+)
+
 type Remember struct {
 	Store KV
 	sync.Mutex
@@ -17,9 +21,21 @@ type KV interface {
 }
 
 func NewRemember(store KV) *Remember {
+	if !isInitValuesSet() {
+		panic("all init vars need to set first")
+	}
+
 	return &Remember{
 		Store: store,
 	}
+}
+
+func isInitValuesSet() (res bool) {
+	if StoreErrorNotFound.Error() == "" {
+		return
+	}
+
+	return true
 }
 
 func (r *Remember) Close() (err error) {
