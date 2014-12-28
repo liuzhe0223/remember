@@ -22,21 +22,6 @@ func NewRemember(store KV) *Remember {
 	}
 }
 
-func (r *Remember) Get(key []byte) (value []byte, err error) {
-	value, err = r.Store.Get(key)
-	return
-}
-
-func (r *Remember) Put(key, value []byte) (err error) {
-	err = r.Store.Put(key, value)
-	return
-}
-
-func (r *Remember) Delete(key []byte) (err error) {
-	err = r.Store.Delete(key)
-	return
-}
-
 func (r *Remember) Close() (err error) {
 	err = r.Store.Close()
 	return
