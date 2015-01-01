@@ -39,11 +39,11 @@ func (r *Remember) lEncodeKey(key []byte, pos int32) []byte {
 func (r *Remember) lGetMeta(metaKey []byte) (headPos, tailPos, size int32, err error) {
 	value, err := r.Store.Get(metaKey)
 
-	if err != nil && err.Error() != StoreErrorNotFound.Error() {
+	if err != nil && err != ErrNotFound {
 		return
 	}
 
-	if err != nil && err.Error() == StoreErrorNotFound.Error() {
+	if err == ErrNotFound {
 		err = nil
 	}
 

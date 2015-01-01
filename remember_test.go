@@ -3,8 +3,6 @@ package remember
 import (
 	"testing"
 
-	"github.com/syndtr/goleveldb/leveldb"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,5 +25,5 @@ func TestDbOriginOPs(t *testing.T) {
 	assert.NoError(t, err)
 
 	_, err = r.Get(key)
-	assert.Equal(t, err, leveldb.ErrNotFound)
+	assert.Equal(t, err, ErrNotFound)
 }
